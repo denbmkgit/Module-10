@@ -1,0 +1,44 @@
+import threading
+from random import randint as rd
+from threading import Thread, Lock
+from time import sleep
+
+class Bank(Thread):
+    def __init__(self, balance):
+        super().__init__()
+        self.balance = balance
+        self.lock = Lock()
+
+    def deposit(self):
+        for i in range(100):
+            rd_num = rd(50, 100)
+            self.balance += rd_num
+            if self.balance >= 500 and self.lock.locked():
+                self.lock.release()
+            print(f"Пополнение: {rd_num}. Баланс: {self.balance}.")
+        sleep(0.001)
+
+    def take(self):
+        for i in range(100):
+            rd_num = rd(50, 100)
+            print(f'Запрос на {rd_num}.')
+            if rd_num <= self.balance:
+                self.balance -= rd_num
+                print(f"Снятие: {rd_num}. Баланс: {self.balance}.")
+            else:
+                print(f"Запрос отклонён, недостаточно средств")
+                self.lock.acquire()
+
+
+bank_account = Bank(0)
+
+# Т.к. методы принимают self, в потоки нужно передать сам объект класса Bank
+th1 = threading.Thread(target=Bank.deposit, args=(bank_account,))
+th2 = threading.Thread(target=Bank.take, args=(bank_account,))
+
+th1.start()
+th2.start()
+th1.join()
+th2.join()
+
+print(f'Итоговый баланс: {bank_account.balance}')
