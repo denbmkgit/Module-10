@@ -1,0 +1,31 @@
+import multiprocessing
+import datetime
+
+def read_info(name):
+    # print(name)
+    all_data = []
+    with open(name, 'r') as file:
+        for i in file:
+            all_data.append(i)
+
+# start = datetime.datetime.now()
+# for i in range(1, 5):
+#     read_info(f'file {i}.txt')
+#
+# end = datetime.datetime.now()
+# print(end - start)
+
+
+if __name__ == '__main__':
+
+    # start_m_1 = datetime.datetime.now()
+    all_files = []
+    for i in range(1, 5):
+        all_files.append(f'file {i}.txt')
+
+    start_m_2 = datetime.datetime.now()
+    with multiprocessing.Pool(processes=4) as pool:
+        pool.map(read_info, all_files)
+    end_m_1 = datetime.datetime.now()
+    # print(end_m_1 - start_m_1)
+    print(end_m_1 - start_m_2)
