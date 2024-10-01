@@ -8,24 +8,24 @@ def read_info(name):
         for i in file:
             all_data.append(i)
 
-# start = datetime.datetime.now()
-# for i in range(1, 5):
-#     read_info(f'file {i}.txt')
-#
-# end = datetime.datetime.now()
-# print(end - start)
+start = datetime.datetime.now()
+for i in range(1, 5):
+    read_info(f'file {i}.txt')
+
+end = datetime.datetime.now()
+print(end - start)
 
 
 if __name__ == '__main__':
 
-    # start_m_1 = datetime.datetime.now()
+    # start_m_0 = datetime.datetime.now()
     all_files = []
     for i in range(1, 5):
         all_files.append(f'file {i}.txt')
 
-    start_m_2 = datetime.datetime.now()
+    start_m_1 = datetime.datetime.now()
     with multiprocessing.Pool(processes=4) as pool:
         pool.map(read_info, all_files)
     end_m_1 = datetime.datetime.now()
-    # print(end_m_1 - start_m_1)
-    print(end_m_1 - start_m_2)
+    # print(end_m_1 - start_m_0)
+    print(end_m_1 - start_m_1)
